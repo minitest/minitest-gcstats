@@ -1,0 +1,8 @@
+.autotest
+History.rdoc
+Manifest.txt
+README.rdoc
+Rakefile
+lib/minitest/gcstats.rb
+lib/minitest/gcstats_plugin.rb
+test/minitest/test_gcstats.rb
