@@ -5,16 +5,26 @@ module Minitest::GCStats
 
   attr_accessor :gc_stats
 
-  def self.current
-    GC.stat[:total_allocated_object]
+  begin
+    GC.stat :total_allocated_object
+
+    def self.current
+      GC.stat :total_allocated_object
+    end
+  rescue TypeError
+    def self.current
+      GC.stat[:total_allocated_object]
+    end
   end
 
   def before_setup
+    super
     self.gc_stats = -Minitest::GCStats.current
   end
 
   def after_teardown
     self.gc_stats += Minitest::GCStats.current
+    super
   end
 end
 
