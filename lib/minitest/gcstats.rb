@@ -5,6 +5,8 @@ module Minitest::GCStats
 
   attr_accessor :gc_stats
 
+  HASH = {}
+
   begin
     GC.stat :total_allocated_object
 
@@ -13,7 +15,7 @@ module Minitest::GCStats
     end
   rescue TypeError
     def self.current
-      GC.stat[:total_allocated_object]
+      GC.stat(HASH)[:total_allocated_object]
     end
   end
 
