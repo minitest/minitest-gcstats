@@ -41,7 +41,7 @@ class Minitest::GCStatsReporter < Minitest::AbstractReporter
   end
 
   def record result
-    self.stats["#{result.class.name}##{result.name}"] = result.gc_stats
+    self.stats[result] = result.gc_stats
   end
 
   def report
@@ -51,7 +51,7 @@ class Minitest::GCStatsReporter < Minitest::AbstractReporter
     puts
     puts "Top #{max} tests by objects allocated"
     puts
-    stats.sort_by { |k,v| [-v, k] }.first(max).each do |k,v|
+    stats.sort_by { |k,v| [-v, k.class.name, k.name] }.first(max).each do |k,v|
       puts "%6d (%5.2f%%): %s" % [v, v / pct, k]
     end
     puts
