@@ -1,7 +1,7 @@
 require "minitest"
 
 module Minitest::GCStats
-  VERSION = "1.0.0"
+  VERSION = "1.1.0"
 
   attr_accessor :gc_stats
 
