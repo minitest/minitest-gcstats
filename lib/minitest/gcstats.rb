@@ -47,7 +47,7 @@ module Minitest::Assertions
     exp = -exp if exp < 0
     msg ||= "Object allocations"
 
-    assert_operator act, op, exp.abs, msg
+    assert_operator act, op, exp, msg
   end
 end
 
