@@ -368,14 +368,20 @@ class TestAssertObject < Minitest::Test
     end
   end
 
+  def test_assert_allocations_multi_eq
+    assert_allocations :==, 3 do
+      3.times { Object.new }
+    end
+  end
+
   def test_assert_allocations_neg_lt
-    assert_allocations(-3) do
+    assert_allocations :<=, 3 do
       2.times { Object.new }
     end
   end
 
   def test_assert_allocations_neg_eq
-    assert_allocations(-3) do
+    assert_allocations :<=, 3 do
       3.times { Object.new }
     end
   end
@@ -406,7 +412,7 @@ class TestAssertObject < Minitest::Test
     exp = "Object allocations.\nExpected 5 to be <= 3."
 
     assert_triggered exp do
-      assert_allocations(-3) do
+      assert_allocations :<=, 3 do
         5.times { Object.new }
       end
     end

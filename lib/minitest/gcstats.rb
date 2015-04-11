@@ -32,19 +32,25 @@ end
 
 module Minitest::Assertions
   ##
-  # Assert the number of object allocations during block execution. If
-  # +exp+ is positive, the number of allocations must be equal to that
-  # value. If +exp+ is negative, the number of objects must be <=
-  # +exp.abs+.
+  # Assert that the number of object allocations during block
+  # execution is what you think it is. Uses +assert_operator+ so +op+
+  # should be something like :== or :<=. Defaults to :==.
+  #
+  #   assert_allocations 3 do ... end
+  #
+  # is equivalent to:
+  #
+  #   assert_allocations :==, 3 do ... end
 
-  def assert_allocations exp, msg = nil
+  def assert_allocations op_or_exp, exp = nil, msg = nil
     m0 = Minitest::GCStats.current
     yield
     m1 = Minitest::GCStats.current
 
+    op = op_or_exp
+    op, exp, msg = :==, op, exp if Integer === op
+
     act = m1 - m0
-    op  = exp >= 0 ? :== : :<=
-    exp = -exp if exp < 0
     msg ||= "Object allocations"
 
     assert_operator act, op, exp, msg
