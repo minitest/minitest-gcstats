@@ -15,6 +15,8 @@ Hoe.spec "minitest-gcstats" do
 
   dependency "minitest", "~> 5.0"
   dependency "rake", "< 11", :developer
+
+  multiruby_skip << '1.8'
 end
 
 # vim: syntax=ruby
