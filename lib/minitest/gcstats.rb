@@ -8,13 +8,18 @@ module Minitest::GCStats
   HASH = {}
 
   begin
-    GC.stat :total_allocated_object
-
-    def self.current
-      GC.stat :total_allocated_object
+    if GC.stat[:total_allocated_objects] then # ruby 2.2
+      def self.current
+        GC.stat :total_allocated_objects
+      end
+    else                                      # ruby 2.1
+      GC.stat :total_allocated_object         # force raise
+      def self.current
+        GC.stat :total_allocated_object
+      end
     end
   rescue TypeError
-    def self.current
+    def self.current                          # ruby 2.0
       GC.stat(HASH)[:total_allocated_object]
     end
   end
