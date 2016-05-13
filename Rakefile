@@ -15,6 +15,7 @@ Hoe.spec "minitest-gcstats" do
 
   dependency "minitest", "~> 5.0"
   dependency "rake", "< 11", :developer
+  dependency "minitest-proveit", "~> 1.0", :developer
 
   multiruby_skip << '1.8'
 end

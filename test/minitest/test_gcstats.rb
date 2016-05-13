@@ -1,9 +1,12 @@
 require "minitest/autorun"
 require "minitest/gcstats"
+require "minitest/proveit"
 
 module TestMinitest; end
 
 class TestMinitest::TestGcstats < Minitest::Test
+  self.prove_it = false
+
   def test_empty
     # 0 objects
   end
