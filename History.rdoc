@@ -1,3 +1,9 @@
+=== 1.2.2 / 2016-06-13
+
+* 1 bug fix:
+
+  * Added minitest-proveit developer dependency to help with minitest/hell gauntlet.
+
 === 1.2.1 / 2015-05-28
 
 * 1 bug fix:
