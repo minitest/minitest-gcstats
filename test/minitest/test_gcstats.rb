@@ -7,6 +7,22 @@ module TestMinitest; end
 class TestMinitest::TestGcstats < Minitest::Test
   self.prove_it = false
 
+  def util_n_times_full n
+    n.times { test_full }
+  end
+
+  def util_array
+    [test_full]
+  end
+
+  def setup
+    util_n_times_full 1 # warm
+
+    assert_allocations :<, 99 do
+       # warm it up
+    end
+  end
+
   def test_empty
     # 0 objects
   end
@@ -17,7 +33,7 @@ class TestMinitest::TestGcstats < Minitest::Test
 
   def test_assert_allocations
     assert_allocations 1 do
-      []
+      test_full
     end
   end
 
@@ -29,25 +45,25 @@ class TestMinitest::TestGcstats < Minitest::Test
 
   def test_assert_allocations_multi
     assert_allocations 3 do
-      3.times { Object.new }
+      util_n_times_full 3
     end
   end
 
   def test_assert_allocations_multi_eq
     assert_allocations :==, 3 do
-      3.times { Object.new }
+      util_n_times_full 3
     end
   end
 
   def test_assert_allocations_neg_lt
     assert_allocations :<=, 3 do
-      2.times { Object.new }
+      util_n_times_full 2
     end
   end
 
   def test_assert_allocations_neg_eq
     assert_allocations :<=, 3 do
-      3.times { Object.new }
+      util_n_times_full 3
     end
   end
 
@@ -66,19 +82,23 @@ class TestMinitest::TestGcstats < Minitest::Test
   def test_assert_allocations_bad
     exp = "Object allocations.\nExpected 2 to be == 1."
 
+    util_array # warm
+
     assert_triggered exp do
       assert_allocations 1 do
-        [Object.new]
+        util_array
       end
     end
   end
 
   def test_assert_allocations_neg_bad
-    exp = "Object allocations.\nExpected 5 to be <= 3."
+    util_n_times_full 5
+
+    exp = "Object allocations.\nExpected #{5} to be <= 3."
 
     assert_triggered exp do
       assert_allocations :<=, 3 do
-        5.times { Object.new }
+        util_n_times_full 5
       end
     end
   end
