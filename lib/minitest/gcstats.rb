@@ -24,6 +24,12 @@ module Minitest::GCStats
     end
   end
 
+  def run
+    r = super
+    r.gc_stats = self.gc_stats
+    r
+  end
+
   def before_setup
     super
     self.gc_stats = -Minitest::GCStats.current
@@ -34,6 +40,12 @@ module Minitest::GCStats
     super
   end
 end
+
+class Minitest::Result
+  attr_accessor :gc_stats
+end
+
+Minitest::Test.prepend Minitest::GCStats
 
 module Minitest::Assertions
   ##

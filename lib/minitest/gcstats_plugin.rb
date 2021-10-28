@@ -13,7 +13,6 @@ module Minitest
     if @gcstats then
       require "minitest/gcstats"
       self.reporter << Minitest::GCStatsReporter.new(@gcstats)
-      Minitest::Test.send :include, Minitest::GCStats
     end
   end
 end
