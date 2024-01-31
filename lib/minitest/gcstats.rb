@@ -41,11 +41,24 @@ module Minitest::GCStats
   end
 end
 
-class Minitest::Result
+module Minitest::GCStats::Result
   attr_accessor :gc_stats
+
+  def self.prepended klass
+    klass.singleton_class.prepend ClassMethods
+  end
+
+  module ClassMethods
+    def from runnable
+      r = super
+      r.gc_stats = runnable.gc_stats
+      r
+    end
+  end
 end
 
 Minitest::Test.prepend Minitest::GCStats
+Minitest::Result.prepend Minitest::GCStats::Result
 
 module Minitest::Assertions
   ##
