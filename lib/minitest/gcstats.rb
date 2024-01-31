@@ -5,23 +5,8 @@ module Minitest::GCStats
 
   attr_accessor :gc_stats
 
-  HASH = {}
-
-  begin
-    if GC.stat[:total_allocated_objects] then # ruby 2.2
-      def self.current
-        GC.stat :total_allocated_objects
-      end
-    else                                      # ruby 2.1
-      GC.stat :total_allocated_object         # force raise
-      def self.current
-        GC.stat :total_allocated_object
-      end
-    end
-  rescue TypeError
-    def self.current                          # ruby 2.0
-      GC.stat(HASH)[:total_allocated_object]
-    end
+  def self.current
+    GC.stat :total_allocated_objects
   end
 
   def run
@@ -102,7 +87,7 @@ class Minitest::GCStatsReporter < Minitest::AbstractReporter
   end
 
   def report
-    total = stats.values.inject(&:+)
+    total = stats.values.sum
     pct = total / 100.0
 
     puts
