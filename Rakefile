@@ -12,7 +12,7 @@ Hoe.spec "minitest-gcstats" do
   license "MIT"
 
   dependency "minitest", "> 5.0"
-  dependency "rake", "< 11", :developer
+  dependency "rake", "> 13", :developer
   dependency "minitest-proveit", "~> 1.0", :developer
 end
 
