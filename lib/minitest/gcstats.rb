@@ -1,5 +1,7 @@
 require "minitest"
 
+Minitest.load :gcstats if Minitest.respond_to? :load
+
 module Minitest::GCStats
   VERSION = "1.3.1"
 
